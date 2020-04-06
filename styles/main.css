@@ -996,3 +996,28 @@ td {
         font-family: -apple-system,BlinkMacSystemFont,'Helvetica Neue','PingFang SC','Hiragino Sans GB','Droid Sans Fallback','Microsoft YaHei',sans-serif;
       }
     
+      .main {
+        background: #fff9db;
+      }
+    
+      body {
+        color: #a5d8ff;
+      }
+    
+      a {
+        color: #ff6b6b;
+      }
+    
+      a:hover {
+        color: #d0bfff;
+      }
+    
+      body {
+    background:url("https://img.paulzzh.tech/touhou/konachan/image/8c5eb5877f31cf4b8e4075bc106b14d9.jpg");
+    background-position:center left;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment:fixed
+}
+
+    
