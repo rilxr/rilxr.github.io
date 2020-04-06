@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rilxr.github.io</id>
-    <title>Princess_lxr</title>
-    <updated>2020-04-06T02:23:20.561Z</updated>
+    <title>PrincessYR✨～</title>
+    <updated>2020-04-06T02:31:29.769Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rilxr.github.io"/>
     <link rel="self" href="https://rilxr.github.io/atom.xml"/>
     <subtitle>AK IOI</subtitle>
     <logo>https://rilxr.github.io/images/avatar.png</logo>
     <icon>https://rilxr.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2020, Princess_lxr</rights>
+    <rights>All rights reserved 2020, PrincessYR✨～</rights>
     <entry>
         <title type="html"><![CDATA[CF914D 【Bash and a Tough Math Puzzle】题解]]></title>
         <id>https://rilxr.github.io/post/cf914d-bash-and-a-tough-math-puzzle-ti-jie/</id>
