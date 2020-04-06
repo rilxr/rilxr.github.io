@@ -1,0 +1,398 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CF914D 【Bash and a Tough Math Puzzle】题解 | Princess_lxr</title>
+<link rel="shortcut icon" href="https://rilxr.github.io/favicon.ico?v=1586138593696">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://rilxr.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="CF914D 【Bash and a Tough Math Puzzle】题解 | Princess_lxr - Atom Feed" href="https://rilxr.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="这是一道线段树的模板题，外加找最大公约数。
+先来讲一下线段树哦：
+
+建树：
+
+先来看一下线段树长啥样
+
+（注：图片来自百度百科）
+最下面一层是我们要读入的数组a[i]。
+我们从顶端开始建树，根据二叉树的性质我们可以知道一棵树的左儿子的序号为..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://rilxr.github.io">
+  <img class="avatar" src="https://rilxr.github.io/images/avatar.png?v=1586138593696" alt="">
+  </a>
+  <h1 class="site-title">
+    Princess_lxr
+  </h1>
+  <p class="site-description">
+    AK IOI
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              CF914D 【Bash and a Tough Math Puzzle】题解
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-04-06
+              </span>
+              <span>
+                8 min read
+              </span>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://rilxr.github.io/post-images/cf914d-bash-and-a-tough-math-puzzle-ti-jie.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>这是一道线段树的模板题，外加找最大公约数。</p>
+<p>先来讲一下线段树哦：</p>
+<ol>
+<li>建树：</li>
+</ol>
+<p>先来看一下线段树长啥样</p>
+<figure data-type="image" tabindex="1"><img src="https://bkimg.cdn.bcebos.com/pic/bd3eb13533fa828bcb5fe85ffe1f4134970a5a09?x-bce-process=image/watermark,g_7,image_d2F0ZXIvYmFpa2U5Mg==,xp_5,yp_5" alt="" loading="lazy"></figure>
+<p>（注：图片来自百度百科）</p>
+<p>最下面一层是我们要读入的数组a[i]。</p>
+<p>我们从顶端开始建树，根据二叉树的性质我们可以知道一棵树的左儿子的序号为父亲的序号乘二，右儿子为乘二加一。</p>
+<p>我们一直往下递推，知道左端点等于右端点，及一个区间只包含一个数。及搜到最后一层，我们便将a数组的只赋给线段树，当回到父节点是在根据需要判断。</p>
+<p>例如这道题要求最小值，我们使父亲节点取字节点的最小值（如果求和，则将子节点的值加起来）。</p>
+<p>建树代码：</p>
+<pre><code>void build(int k,int l,int r)//k为结点编号，l为区间的左端，r为右端
+{
+	lazy[k]=0;
+	if(l==r)
+	{
+		sum[k]=a[l];
+		return ;
+	}
+	int mid=(l+r)/2;
+	build(k*2,l,mid);
+	build(k*2+1,mid+1,r);
+	sum[k]=min(sum[k*2],sum[k*2+1]);
+}
+</code></pre>
+<p>如果求和：</p>
+<p>我们只需要在最开始时将</p>
+<pre><code>sum[k]=min(sum[k*2],sum[k*2+1]);
+</code></pre>
+<p>中的等式右边改为自己想要的即可</p>
+<p>在这道题中只让我们求最大公约数，所以，我们sum就存最大公约数，具体讲解在下方。</p>
+<ol start="2">
+<li>加减标记：</li>
+</ol>
+<p>一般来说加减就一直搜，将所有点都改一遍。然而这样时间复杂度十分高，十分容易超时。</p>
+<p>那么我们就引入了懒惰标记，lazy。</p>
+<p>lazy就是将我们要更改的只存储起来，不向下传，等到什么时候要求这个区间的值时，再将值更改。</p>
+<p>代码：</p>
+<pre><code>void pushdown(int k)
+{
+	lazy[k*2]+=lazy[k];//将lazy传给左儿子
+	lazy[k*2+1]+=lazy[k];//将lazy传给右儿子
+	sum[k*2]+=lazy[k];//左儿子加上lazy
+	sum[k*2+1]+=lazy[k];//右儿子加上lazy
+	lazy[k]=0;//将父亲节点的lazy清零
+}
+
+
+void gx(int L,int R,int e,int l,int r,int k)
+{
+	if(L&lt;=l&amp;&amp;R&gt;=r)//如果当前查询的区间完全包含在内
+	{
+		lazy[k]+=e;//lazy记录
+		sum[k]+=e;//当前节点加e
+		return ; 
+	}
+	pushdown(k);//将lazy传给子节点
+	int mid=(l+r)/2;
+	if(L&lt;=mid)//如果左节点有要查询的值
+	{
+		gx(L,R,e,l,mid,k*2);//查询左边
+	}
+	if(mid&lt;R)//如果右节点有要查询的值
+	{
+		gx(L,R,e,mid+1,r,k*2+1);//查询右边的值
+	}
+	sum[k]=min(sum[k*2],sum[k*2+1]);
+}
+</code></pre>
+<ol start="2">
+<li>最小值查询：</li>
+</ol>
+<pre><code>int qh(long k,int l,int r,int L,int R)//注意，本代码中sum求的是最小值
+{
+	if(L&lt;=l&amp;&amp;R&gt;=r)//如果包含在内，直接返回最小值
+	{
+		return sum[k];
+	}
+	else 
+	{
+		pushdown(k);//更新子节点，将lazy下传
+		long long re=2147483647485;
+		int mid=(l+r)/2;
+		if(L&lt;=mid)//如果在左半只
+		re=min(re,qh(k*2,l,mid,L,R));
+		if(R&gt;mid)//如果在右半只
+		re=min(re,qh(k*2+1,mid+1,r,L,R));
+		return re;
+	}
+}
+</code></pre>
+<ol start="3">
+<li>求和求和查询：</li>
+</ol>
+<pre><code>int query(int ls,int rs,int l,int r,int p)
+{
+	if(rs&lt;l||r&lt;ls)
+	{
+		return 0;
+	}
+	if(ls&lt;=l&amp;&amp;r&lt;=rs) 
+	{
+		return sum[p];
+	}
+	pushdown(p,l,r);
+	int mid=(l+r)/2;
+	return query(ls,rs,l,mid,p*2)+query(ls,rs,mid+1,r,p*2+1);
+}
+</code></pre>
+<p>最后来看一看这道题：</p>
+<blockquote>
+<p>如果我们可以在数列[l,r]位置中改动至多一个数使得它们的最大公约数是x，那么这个猜测就被认为是接近正确的(注意我们不需要在数列中进行实际的改动)。</p>
+</blockquote>
+<p>题目说，我们可以改动一个数，那么我们来想想，我们该一个数，那么肯定是将这个数改为其他所有数的最大公约数，因为这样，我们才能使尽量少改数。</p>
+<p>那么也就是说，如果只有其中的一个数不符合，那么我们就只改它一个就可以了，如果多于一个就需要输出NO。</p>
+<p>那么我们就可以求在搜索过程中找有几个数不能被整除，如果大于一，说名我们需要改不知一个数，才能是x为其最大公约数。如果小于等于一，则说明我只需要改一个数或者不改，就能是使大公约数为x。</p>
+<p>下面上代码：</p>
+<pre><code>#include&lt;bits/stdc++.h&gt;
+using namespace std;
+inline int read()
+{
+    int x=0,f=1;
+    char ch=getchar();
+    while(ch&lt;'0'||ch&gt;'9')
+    {
+        if(ch=='-')
+        f=-1;
+        ch=getchar();
+    }
+    while(ch&gt;='0'&amp;&amp;ch&lt;='9')
+    {
+        x=(x&lt;&lt;1)+(x&lt;&lt;3)+(ch^48);
+        ch=getchar();
+    }
+    return x*f;
+}
+int n,m,a[500005],sum[500005&lt;&lt;2];
+int q,b,c,d,tot;
+int zd(int x,int y) //求最大公约数
+{
+    return y?zd(y,x%y):x;
+}
+void pushup(int k)//将父亲节点的sum转化为子节点的最大公约数
+{
+	sum[k]=zd(sum[k&lt;&lt;1],sum[k&lt;&lt;1|1]);
+}
+void build(int k,int l,int r)//建树
+{
+	if(l==r)
+	{
+		sum[k]=a[l];
+		return ;
+	}
+	int m=(l+r)&gt;&gt;1;
+	build(k&lt;&lt;1,l,m);
+	build(k&lt;&lt;1|1,m+1,r);
+	pushup(k);
+}
+void jia(int b,int c,int l,int r,int k)//节点加和
+{
+	if(l==r&amp;&amp;r==b)如果搜到b则将值更改为c
+	{
+		sum[k]=c;
+		return ;
+	}
+	int m=(l+r)&gt;&gt;1;
+	if(b&lt;=m)//如果在左半只，搜索左半只
+	{
+		jia(b,c,l,m,k&lt;&lt;1);
+	}
+	else//如果在右半只，搜索右半只
+	{
+		jia(b,c,m+1,r,k&lt;&lt;1|1);
+	}
+	pushup(k);//更新父节点sum
+}
+void pd(int b,int c,int d,int l,int r,int k)
+{
+	if(tot&gt;1) return ;//一个小小的一优化，否则会TLE
+	if(l==r) 
+	{
+		tot++;
+		return ;
+	}
+	int m=(l+r)&gt;&gt;1;
+	if(b&lt;=m&amp;&amp;sum[k&lt;&lt;1]%d!=0)//如果有无法整除的数，也就是但前最大公约数不符合，就继续往下搜索，判断需要改几个
+	{
+		pd(b,c,d,l,m,k&lt;&lt;1);
+	}
+	if(c&gt;m&amp;&amp;sum[k&lt;&lt;1|1]%d!=0)
+	{
+		pd(b,c,d,m+1,r,k&lt;&lt;1|1);
+	}
+}
+int main()
+{
+	n=read();
+	for(int i=1;i&lt;=n;i++) a[i]=read();
+	build(1,1,n);
+	m=read();
+	for(int i=1;i&lt;=m;i++)
+	{
+		q=read();
+		if(q==2)
+		{
+			b=read();c=read();
+			jia(b,c,1,n,1);
+		}
+		else
+		{
+			b=read();c=read();d=read();
+			tot=0;
+			pd(b,c,d,1,n,1);
+			if(tot&gt;1)
+			puts(&quot;NO&quot;);
+			else puts(&quot;YES&quot;);
+		}
+	}
+	return 0;
+ } 
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://rilxr.github.io/post/cf427c-checkposts-ti-jie/">
+              <h3 class="post-title">
+                CF427C 【Checkposts】题解
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://rilxr.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

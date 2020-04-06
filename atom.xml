@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://rilxr.github.io</id>
     <title>Princess_lxr</title>
-    <updated>2020-04-06T01:51:52.778Z</updated>
+    <updated>2020-04-06T02:03:16.972Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://rilxr.github.io"/>
     <link rel="self" href="https://rilxr.github.io/atom.xml"/>
@@ -11,35 +11,624 @@
     <icon>https://rilxr.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, Princess_lxr</rights>
     <entry>
-        <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://rilxr.github.io/post/hello-gridea/</id>
-        <link href="https://rilxr.github.io/post/hello-gridea/">
+        <title type="html"><![CDATA[CF914D 【Bash and a Tough Math Puzzle】题解]]></title>
+        <id>https://rilxr.github.io/post/cf914d-bash-and-a-tough-math-puzzle-ti-jie/</id>
+        <link href="https://rilxr.github.io/post/cf914d-bash-and-a-tough-math-puzzle-ti-jie/">
         </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+        <updated>2020-04-06T02:02:50.000Z</updated>
+        <content type="html"><![CDATA[<p>这是一道线段树的模板题，外加找最大公约数。</p>
+<p>先来讲一下线段树哦：</p>
+<ol>
+<li>建树：</li>
+</ol>
+<p>先来看一下线段树长啥样</p>
+<figure data-type="image" tabindex="1"><img src="https://bkimg.cdn.bcebos.com/pic/bd3eb13533fa828bcb5fe85ffe1f4134970a5a09?x-bce-process=image/watermark,g_7,image_d2F0ZXIvYmFpa2U5Mg==,xp_5,yp_5" alt="" loading="lazy"></figure>
+<p>（注：图片来自百度百科）</p>
+<p>最下面一层是我们要读入的数组a[i]。</p>
+<p>我们从顶端开始建树，根据二叉树的性质我们可以知道一棵树的左儿子的序号为父亲的序号乘二，右儿子为乘二加一。</p>
+<p>我们一直往下递推，知道左端点等于右端点，及一个区间只包含一个数。及搜到最后一层，我们便将a数组的只赋给线段树，当回到父节点是在根据需要判断。</p>
+<p>例如这道题要求最小值，我们使父亲节点取字节点的最小值（如果求和，则将子节点的值加起来）。</p>
+<p>建树代码：</p>
+<pre><code>void build(int k,int l,int r)//k为结点编号，l为区间的左端，r为右端
+{
+	lazy[k]=0;
+	if(l==r)
+	{
+		sum[k]=a[l];
+		return ;
+	}
+	int mid=(l+r)/2;
+	build(k*2,l,mid);
+	build(k*2+1,mid+1,r);
+	sum[k]=min(sum[k*2],sum[k*2+1]);
+}
+</code></pre>
+<p>如果求和：</p>
+<p>我们只需要在最开始时将</p>
+<pre><code>sum[k]=min(sum[k*2],sum[k*2+1]);
+</code></pre>
+<p>中的等式右边改为自己想要的即可</p>
+<p>在这道题中只让我们求最大公约数，所以，我们sum就存最大公约数，具体讲解在下方。</p>
+<ol start="2">
+<li>加减标记：</li>
+</ol>
+<p>一般来说加减就一直搜，将所有点都改一遍。然而这样时间复杂度十分高，十分容易超时。</p>
+<p>那么我们就引入了懒惰标记，lazy。</p>
+<p>lazy就是将我们要更改的只存储起来，不向下传，等到什么时候要求这个区间的值时，再将值更改。</p>
+<p>代码：</p>
+<pre><code>void pushdown(int k)
+{
+	lazy[k*2]+=lazy[k];//将lazy传给左儿子
+	lazy[k*2+1]+=lazy[k];//将lazy传给右儿子
+	sum[k*2]+=lazy[k];//左儿子加上lazy
+	sum[k*2+1]+=lazy[k];//右儿子加上lazy
+	lazy[k]=0;//将父亲节点的lazy清零
+}
+
+
+void gx(int L,int R,int e,int l,int r,int k)
+{
+	if(L&lt;=l&amp;&amp;R&gt;=r)//如果当前查询的区间完全包含在内
+	{
+		lazy[k]+=e;//lazy记录
+		sum[k]+=e;//当前节点加e
+		return ; 
+	}
+	pushdown(k);//将lazy传给子节点
+	int mid=(l+r)/2;
+	if(L&lt;=mid)//如果左节点有要查询的值
+	{
+		gx(L,R,e,l,mid,k*2);//查询左边
+	}
+	if(mid&lt;R)//如果右节点有要查询的值
+	{
+		gx(L,R,e,mid+1,r,k*2+1);//查询右边的值
+	}
+	sum[k]=min(sum[k*2],sum[k*2+1]);
+}
+</code></pre>
+<ol start="2">
+<li>最小值查询：</li>
+</ol>
+<pre><code>int qh(long k,int l,int r,int L,int R)//注意，本代码中sum求的是最小值
+{
+	if(L&lt;=l&amp;&amp;R&gt;=r)//如果包含在内，直接返回最小值
+	{
+		return sum[k];
+	}
+	else 
+	{
+		pushdown(k);//更新子节点，将lazy下传
+		long long re=2147483647485;
+		int mid=(l+r)/2;
+		if(L&lt;=mid)//如果在左半只
+		re=min(re,qh(k*2,l,mid,L,R));
+		if(R&gt;mid)//如果在右半只
+		re=min(re,qh(k*2+1,mid+1,r,L,R));
+		return re;
+	}
+}
+</code></pre>
+<ol start="3">
+<li>求和求和查询：</li>
+</ol>
+<pre><code>int query(int ls,int rs,int l,int r,int p)
+{
+	if(rs&lt;l||r&lt;ls)
+	{
+		return 0;
+	}
+	if(ls&lt;=l&amp;&amp;r&lt;=rs) 
+	{
+		return sum[p];
+	}
+	pushdown(p,l,r);
+	int mid=(l+r)/2;
+	return query(ls,rs,l,mid,p*2)+query(ls,rs,mid+1,r,p*2+1);
+}
+</code></pre>
+<p>最后来看一看这道题：</p>
+<blockquote>
+<p>如果我们可以在数列[l,r]位置中改动至多一个数使得它们的最大公约数是x，那么这个猜测就被认为是接近正确的(注意我们不需要在数列中进行实际的改动)。</p>
+</blockquote>
+<p>题目说，我们可以改动一个数，那么我们来想想，我们该一个数，那么肯定是将这个数改为其他所有数的最大公约数，因为这样，我们才能使尽量少改数。</p>
+<p>那么也就是说，如果只有其中的一个数不符合，那么我们就只改它一个就可以了，如果多于一个就需要输出NO。</p>
+<p>那么我们就可以求在搜索过程中找有几个数不能被整除，如果大于一，说名我们需要改不知一个数，才能是x为其最大公约数。如果小于等于一，则说明我只需要改一个数或者不改，就能是使大公约数为x。</p>
+<p>下面上代码：</p>
+<pre><code>#include&lt;bits/stdc++.h&gt;
+using namespace std;
+inline int read()
+{
+    int x=0,f=1;
+    char ch=getchar();
+    while(ch&lt;'0'||ch&gt;'9')
+    {
+        if(ch=='-')
+        f=-1;
+        ch=getchar();
+    }
+    while(ch&gt;='0'&amp;&amp;ch&lt;='9')
+    {
+        x=(x&lt;&lt;1)+(x&lt;&lt;3)+(ch^48);
+        ch=getchar();
+    }
+    return x*f;
+}
+int n,m,a[500005],sum[500005&lt;&lt;2];
+int q,b,c,d,tot;
+int zd(int x,int y) //求最大公约数
+{
+    return y?zd(y,x%y):x;
+}
+void pushup(int k)//将父亲节点的sum转化为子节点的最大公约数
+{
+	sum[k]=zd(sum[k&lt;&lt;1],sum[k&lt;&lt;1|1]);
+}
+void build(int k,int l,int r)//建树
+{
+	if(l==r)
+	{
+		sum[k]=a[l];
+		return ;
+	}
+	int m=(l+r)&gt;&gt;1;
+	build(k&lt;&lt;1,l,m);
+	build(k&lt;&lt;1|1,m+1,r);
+	pushup(k);
+}
+void jia(int b,int c,int l,int r,int k)//节点加和
+{
+	if(l==r&amp;&amp;r==b)如果搜到b则将值更改为c
+	{
+		sum[k]=c;
+		return ;
+	}
+	int m=(l+r)&gt;&gt;1;
+	if(b&lt;=m)//如果在左半只，搜索左半只
+	{
+		jia(b,c,l,m,k&lt;&lt;1);
+	}
+	else//如果在右半只，搜索右半只
+	{
+		jia(b,c,m+1,r,k&lt;&lt;1|1);
+	}
+	pushup(k);//更新父节点sum
+}
+void pd(int b,int c,int d,int l,int r,int k)
+{
+	if(tot&gt;1) return ;//一个小小的一优化，否则会TLE
+	if(l==r) 
+	{
+		tot++;
+		return ;
+	}
+	int m=(l+r)&gt;&gt;1;
+	if(b&lt;=m&amp;&amp;sum[k&lt;&lt;1]%d!=0)//如果有无法整除的数，也就是但前最大公约数不符合，就继续往下搜索，判断需要改几个
+	{
+		pd(b,c,d,l,m,k&lt;&lt;1);
+	}
+	if(c&gt;m&amp;&amp;sum[k&lt;&lt;1|1]%d!=0)
+	{
+		pd(b,c,d,m+1,r,k&lt;&lt;1|1);
+	}
+}
+int main()
+{
+	n=read();
+	for(int i=1;i&lt;=n;i++) a[i]=read();
+	build(1,1,n);
+	m=read();
+	for(int i=1;i&lt;=m;i++)
+	{
+		q=read();
+		if(q==2)
+		{
+			b=read();c=read();
+			jia(b,c,1,n,1);
+		}
+		else
+		{
+			b=read();c=read();d=read();
+			tot=0;
+			pd(b,c,d,1,n,1);
+			if(tot&gt;1)
+			puts(&quot;NO&quot;);
+			else puts(&quot;YES&quot;);
+		}
+	}
+	return 0;
+ } 
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CF427C 【Checkposts】题解]]></title>
+        <id>https://rilxr.github.io/post/cf427c-checkposts-ti-jie/</id>
+        <link href="https://rilxr.github.io/post/cf427c-checkposts-ti-jie/">
+        </link>
+        <updated>2020-04-06T02:02:04.000Z</updated>
+        <content type="html"><![CDATA[<p>这道题难度并不大，只要会强连通分量基本上都能AC。</p>
+<p>强连通分量讲解<a href="https://183473.blog.luogu.org/tarjan-qiang-lian-tong-fen-liang">看这里</a></p>
+<p>我们分步来看：</p>
+<p>首先，他让我们找最小值，我们可以在求强连通分量是给每一个强连通分量先付一个最大值，然后在和属于这个强连通分量的点一一比较，取最小值即可。</p>
+<pre><code>cost_last[numb]=min(cost_last[numb],cost[q]);
+</code></pre>
+<p>cost_last[numb]为第numb个强连通分量的最小值，cost[q]为属于第numb个强连通分量的点q的花费。</p>
+<p>其次题目让我们求有几种花费相同的情况，我们可以去找每个强连通分量是否有花费一样的点，如果有就累乘，一直乘道最后，别忘了mod1000000007。</p>
+<p>温馨提示：</p>
+<h1 id="long-long">long long</h1>
+<p>请记住不开long long见zz，多开long long见zz。</p>
+<p>最后贴上代码：</p>
+<pre><code>#include&lt;bits/stdc++.h&gt;
+#define MAX 0x3f3f3f3f
+using namespace std;
+const int M= 1e5 + 10;
+const int mod=1000000007; 
+inline int read()
+{
+	int x=0,f=1;
+	char ch=getchar();
+	while(ch&lt;'0'||ch&gt;'9')
+	{
+		if(ch=='-')
+		f=-1;
+		ch=getchar();
+	}
+	while(ch&gt;='0'&amp;&amp;ch&lt;='9')
+	{
+		x=(x&lt;&lt;1)+(x&lt;&lt;3)+(ch^48);
+		ch=getchar();
+	}
+	return x*f;
+}
+vector&lt;int&gt; m[M];
+vector&lt;int&gt; fe[M];
+stack&lt;int&gt; st;
+bool inst[M];
+int n,q,low[M],dfn[M],num;
+int a,b,numb;
+long long cost_last[M],cost[M],last_sum,latlat;
+int nums[M],tot;
+void tarjan(int x)
+{
+	dfn[x]=low[x]=++num;
+	inst[x]=true;
+	st.push(x);
+	for(int i=0;i&lt;m[x].size();i++)
+	{
+		int next=m[x][i];
+		if(dfn[next]==0)
+		{
+			tarjan(next);
+			low[x]=min(low[x],low[next]);
+		}
+		else if(inst[next]==1)
+		{
+			low[x]=min(low[x],dfn[next]);
+		}
+	}
+	if(dfn[x]==low[x])
+	{
+		numb++;
+		int q;
+		do
+		{
+			q=st.top();
+			st.pop();
+			inst[q]=false;
+			//bl[q]=numb;
+			cost_last[numb]=min(cost_last[numb],cost[q]);
+			fe[numb].push_back(q);
+		}while(q!=x);
+	}
+}
+int main() 
+{
+	latlat=1;
+	tot=0;
+	memset(cost_last,21474836,sizeof(cost_last)) ;
+	n=read();
+	for(int i=1;i&lt;=n;i++)
+	cost[i]=read();
+	q=read();
+	for(int i=1;i&lt;=q;i++)
+	{
+		a=read();b=read();
+		m[a].push_back(b);
+	}
+	for(int i=1;i&lt;=n;i++)
+		if(dfn[i]==0)
+		tarjan(i);
+	for(int i=1;i&lt;=numb;i++)
+	{
+		last_sum+=cost_last[i];
+	}
+	cout&lt;&lt;last_sum&lt;&lt;&quot; &quot;;
+	for(int i=1;i&lt;=numb;i++)
+	{
+		for(int j=0;j&lt;fe[i].size();j++)
+		{
+			if(cost[fe[i][j]]==cost_last[i])
+			tot++;
+		}
+		latlat=(latlat*tot)%mod;
+		tot=0;
+	}
+	cout&lt;&lt;latlat;
+	return 0;
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CF25C 【Roads in Berland】题解]]></title>
+        <id>https://rilxr.github.io/post/cf25c-roads-in-berland-ti-jie/</id>
+        <link href="https://rilxr.github.io/post/cf25c-roads-in-berland-ti-jie/">
+        </link>
+        <updated>2020-04-06T02:01:34.000Z</updated>
+        <content type="html"><![CDATA[<p><s>Dij</s>（floyd）</p>
+<p>一看道标签为最短路，一进来我就打了Dij，整整卡了我一个小时。</p>
+<p>结果发现正解是floyd，我太难了。</p>
+<p>来讲一下这道题为什么用floyd：</p>
+<p>我们都知道Dij只能求单源最短路，也就是事先必须确定起点，然后求到每个点的距离，然而这道题让求所有路径的和，也就是全源最短路，而且n&lt;=300，数据范围也不是很大,所以用到了floyd。</p>
+<pre><code>for(int k=1;k&lt;=n;k++)
+{
+	for(int i=1;i&lt;=n;i++)
+	{
+		for(int j=1;j&lt;=n;j++)
+		if(dis[i][j]&gt;dis[i][k]+dis[k][j])
+		{
+			dis[i][j]=dis[i][k]+dis[k][j];
+		}
+	}
+}
+</code></pre>
+<p>这是一个标准的floyd，而floyd最后求出来的答案存储在dis[i][j]中，也就是以i为起点，j为终点，呢么跑floyd的话，只用跑一遍,而Dij最坏情况下要跑k*n遍</p>
+<pre><code>#include&lt;bits/stdc++.h&gt;
+using namespace std;
+#define si 305
+inline int read()
+{
+	int x=0,f=1;
+	char ch=getchar();
+	while(ch&lt;'0'||ch&gt;'9')
+	{
+		if(ch=='-')
+		f=-1;
+		ch=getchar();
+	}
+	while(ch&gt;='0'&amp;&amp;ch&lt;='9')
+	{
+		x=(x&lt;&lt;1)+(x&lt;&lt;3)+(ch^48);
+		ch=getchar();
+	}
+	return x*f;
+}
+inline void write(int a){
+   if(a&lt;0) putchar('-'),a/=-1;
+   if(a&gt;9) write(a/10);
+   putchar(a%10+'0');
+}
+int n,dis[si][si],a,b,c,k,d;
+long long ans;
+int main()
+{
+	n=read();
+	for(int i=1;i&lt;=n;i++)
+	{
+		for(int j=1;j&lt;=n;j++)
+		{
+			cin&gt;&gt;a;
+			dis[i][j]=a;
+		}
+	}
+	k=read();
+	for(int w=1;w&lt;=k;w++)
+	{
+		cin&gt;&gt;b&gt;&gt;c&gt;&gt;d;
+		if(dis[b][c]&gt;d)//如果修后道路变得更长了，那么我们就不需要更新
+		{
+		 dis[b][c]=d;
+		 dis[c][b]=d;
+		 for(int k=1;k&lt;=n;k++)
+		 {
+			for(int i=1;i&lt;=n;i++)
+			{
+				if(k==i) continue;
+				else
+				dis[i][k]=dis[k][i]=min(dis[k][i],min(dis[k][b]+dis[b][i],dis[k][c]+dis[c][i]));//核心代码
+			}
+		 }
+		} 
+		for(int i=1;i&lt;=n;i++)
+		{
+			for(int j=i+1;j&lt;=n;j++)
+			{
+				ans+=dis[i][j];
+			}
+		}
+		cout&lt;&lt;ans&lt;&lt;endl;
+		ans=0;
+	}
+	return 0;
+}
+ 
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Tarjan讲解]]></title>
+        <id>https://rilxr.github.io/post/tarjan-jiang-jie/</id>
+        <link href="https://rilxr.github.io/post/tarjan-jiang-jie/">
+        </link>
+        <updated>2020-04-06T02:00:04.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="这是一个漫jian长nan的过程">这是一个漫（jian）长（nan）的过程</h1>
+<p>请大家耐心读完，相信你一定能学会</p>
+<p>首先来介绍一下强连通分量</p>
+<figure data-type="image" tabindex="1"><img src="https://img-blog.csdnimg.cn/20190823090301810.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>神奇海螺指引你：</p>
+<blockquote>
+<p>有向图强连通分量：在有向图G中，如果两个顶点vi,vj间（vi&gt;vj）有一条从vi到vj的有向路径，同时还有一条从vj到vi的有向路径，则称两个顶点强连通(strongly connected)。如果有向图G的每两个顶点都强连通，称G是一个强连通图。有向图的极大强连通子图，称为强连通分量(strongly connected components)。——百度百科</p>
+</blockquote>
+<p>Tarjan是基于迪法师（DFS）的一种算法，可以说是一种流（du）批（liu）的操作，本蒟蒻苦哈哈的学了好几天才学会强连通分量和缩点；</p>
+<p>步入正轨：</p>
+<h2 id="图中6是第一个被发现的强连通分量其次是5最后被发现的是3412顺序无所谓">图中｛6｝是第一个被发现的强连通分量，其次是｛5｝，最后被发现的是｛3，4，1，2｝<em>（顺序无所谓）</em></h2>
+<figure data-type="image" tabindex="2"><img src="https://img-blog.csdnimg.cn/20200226074807157.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rmc2RzZGFzYQ==,size_16,color_FFFFFF,t_70" alt="图丑勿喷" loading="lazy"></figure>
+<p>Tarjan算法是解决强连通分量和缩点问题的一种比较常见的方法</p>
+<p>接下来开始一步一步的</p>
+<p>首先给你一个图（求其中的强连通分量）</p>
+<figure data-type="image" tabindex="3"><img src="https://img-blog.csdnimg.cn/20190823091129601.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>在这里我们假设从点1开始遍历，并且将访问的点压入栈中</p>
+<p>在进行操作之前，我们要明确Tarjan中的两个至关重要的数组：DFN和LOW；</p>
+<p>DFN[x]：表示这个点x几次被遍历到；</p>
+<p>LOW[x]：表示点x或点x的子树能够追溯到的最早的栈中节点的次序号；</p>
+<p>即LOW[x]=min{LOW[x]，LOW[next]}；</p>
+<p>其中next为x的子节点；</p>
+<p>接下来，我们来一步一步的找；</p>
+<h3 id="第一遍从1直接一直遍历到6另访问到的点的初始low和dfn都为numnum为计数器">第一遍从1直接一直遍历到6，另访问到的点的初始low和dfn都为num++;num为计数器；</h3>
+<p>但当我们遍历到6是发现6没有子节点了，所以low[6]=dfn[6]=4;发现一个强连通分量｛6｝，6出栈；</p>
+<figure data-type="image" tabindex="4"><img src="https://img-blog.csdnimg.cn/20190823091319822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>退回到5，low[5]=min(low[5],low[6]);</p>
+<p>low[6]=4;而low[5]=dfn[5]=3;</p>
+<p>所以low[5]=3；</p>
+<p>low[5]=dfn[5];所以5也是一个强连通分量；5出栈；</p>
+<figure data-type="image" tabindex="5"><img src="https://img-blog.csdnimg.cn/20190823091329523.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>返回3发现3有子节点4，搜索4，并且4入栈；发现4也有子节点，6已经为强连通分量且不再栈中，跳过；</p>
+<p>遍历1，发现一在栈中且已经被访问过，那么4值得被发现；</p>
+<p>所以low[4]=min(low[4],dfn[1]);所以low[4]=1；</p>
+<p>4遍历完，又因为dfn[4]!=low[4],所以4不退站；回到3，low[3]=min(low[3],low[4]);</p>
+<p>所以low[3]=1;3访问完，又因为dfn[3]!=low[3],所以3不退站；</p>
+<figure data-type="image" tabindex="6"><img src="https://img-blog.csdnimg.cn/20190823091337456.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>回到1，发现1还有子节点2，2入栈；发现2的子节点4已经被访问且在栈中，所以low[2]=min(dfn[4],low[2]);</p>
+<p>所以low[2]=5;访问完2，回到一，发现low[1]=dfn[1];所以将栈中的所有点出栈，并且这些点为一个强连通分量；</p>
+<figure data-type="image" tabindex="7"><img src="https://img-blog.csdnimg.cn/20190823091346286.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>至此，所有点已经都被访问，算法结束。</p>
+<p>时间复杂度为O(N+M)；</p>
+<p>下面插上代码：</p>
+<pre><code class="language-csharp">#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;vector&gt;
+#include&lt;string.h&gt;
+#include&lt;stack&gt;
+#define Size 101
+using namespace std;
+inline int read()
+{
+    int x=0,f=1;
+    char ch=getchar();
+    while(ch&lt;'0'||ch&gt;'9')
+    {
+        if(ch=='-')
+        f=-1;
+        ch=getchar();
+    }
+    while(ch&gt;='0'&amp;&amp;ch&lt;='9')
+    {
+        x=(x&lt;&lt;1)+(x&lt;&lt;3)+(ch^48);
+        ch=getchar();
+    }
+    return x*f;
+}
+stack&lt;int&gt; atack;
+vector&lt;int&gt; map[Size]; 
+int a,b,c,d,num=0,low[Size],dfn[Size];
+bool inst[Size];
+void tarjan(int now)
+{
+	dfn[now]=low[now]=++num;
+	atack.push(now);
+	inst[now]=true;
+	for(int i=0;i&lt;map[now].size();i++)
+	{
+		int next=map[now][i];
+		if(dfn[next]==0)
+		{
+			tarjan(next);
+		    low[now]=min(low[now],low[next]);
+		}else if(inst[next]==1)
+	    {
+		low[now]=min(low[now],dfn[next]);
+	    }
+	}
+	if(dfn[now]==low[now])
+	{
+		int p;
+		do
+		{
+			p=atack.top();
+			atack.pop();
+			cout&lt;&lt;p&lt;&lt;&quot; &quot;;
+			inst[p]=0;
+		}while(p!=now);
+		cout&lt;&lt;endl;
+	}
+}
+int main()
+{
+	a=read();b=read();
+	for(int i=1;i&lt;=b;i++)
+	{
+		c=read();d=read();
+		map[c].push_back(d);
+	}
+	memset(dfn,0,sizeof(dfn));
+	memset(inst,false,sizeof(inst));
+	for(int i=1;i&lt;=a;++i)
+	{
+		if(dfn[i]==0)
+		tarjan(i);
+	}
+	return 0;
+}
+</code></pre>
+<p>接下来，讲一下缩点，</p>
+<p>缩点基于强连通分量，在强连通分量的基础上，稍微加一些操作即可。</p>
+<p>缩点就是将所有在同一个强连通分量中的点，压进一个点，然后再累加起每个点的权值，再每个点进行判断，看他们所属的强连通分量是否相同，如果不相同，则说明就是两个不同的缩玩以后的点，我们就可以将他们存起来，存入一个新图。就是缩玩点以后的图。</p>
+<pre><code>void tarjan(int now)
+{
+	dfn[now]=low[now]=++num;
+	atack.push(now);
+	inst[now]=true;
+	for(int i=0;i&lt;map[now].size();i++)
+	{
+		int next=map[now][i];
+		if(dfn[next]==0)
+		{
+			tarjan(next);
+		    low[now]=min(low[now],low[next]);
+		}else if(inst[next]==1)
+	    {
+		low[now]=min(low[now],dfn[next]);
+	    }
+	}
+	if(dfn[now]==low[now])
+	{
+		numb++;
+		int q;
+		do
+		{
+			q=atack.top();
+			inst[q]=0;
+			atack.pop();
+			bl[q]=numb;//标记点q属于哪一个强连通分量
+			nums[numb]++;/*/累加
+		}while(q!=now);
+	}
+}
+</code></pre>
+<pre><code>for(int i=1;i&lt;=a;i++)
+	{
+		for(int j=0;j&lt;map[i].size();j++)
+		{
+			int r=bl[i],t=bl[map[i][j]];//如果不在同一个强连通分量
+			if(r!=t)
+			{
+				map2[r].push_back(t);//从新存图
+				out[r]+=nums[t];
+			}
+		}
+	}
+</code></pre>
 ]]></content>
     </entry>
 </feed>

@@ -1,0 +1,345 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tarjan讲解 | Princess_lxr</title>
+<link rel="shortcut icon" href="https://rilxr.github.io/favicon.ico?v=1586138593696">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://rilxr.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Tarjan讲解 | Princess_lxr - Atom Feed" href="https://rilxr.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="这是一个漫（jian）长（nan）的过程
+请大家耐心读完，相信你一定能学会
+首先来介绍一下强连通分量
+
+神奇海螺指引你：
+
+有向图强连通分量：在有向图G中，如果两个顶点vi,vj间（vi&gt;vj）有一条从vi到vj的有向路径，同时还有一..." />
+    <meta name="keywords" content="Tarjan" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://rilxr.github.io">
+  <img class="avatar" src="https://rilxr.github.io/images/avatar.png?v=1586138593696" alt="">
+  </a>
+  <h1 class="site-title">
+    Princess_lxr
+  </h1>
+  <p class="site-description">
+    AK IOI
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Tarjan讲解
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-04-06
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+                <a href="https://rilxr.github.io/tag/N6Li4B4Yd/" class="post-tag">
+                  # Tarjan
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://rilxr.github.io/post-images/tarjan-jiang-jie.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h1 id="这是一个漫jian长nan的过程">这是一个漫（jian）长（nan）的过程</h1>
+<p>请大家耐心读完，相信你一定能学会</p>
+<p>首先来介绍一下强连通分量</p>
+<figure data-type="image" tabindex="1"><img src="https://img-blog.csdnimg.cn/20190823090301810.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>神奇海螺指引你：</p>
+<blockquote>
+<p>有向图强连通分量：在有向图G中，如果两个顶点vi,vj间（vi&gt;vj）有一条从vi到vj的有向路径，同时还有一条从vj到vi的有向路径，则称两个顶点强连通(strongly connected)。如果有向图G的每两个顶点都强连通，称G是一个强连通图。有向图的极大强连通子图，称为强连通分量(strongly connected components)。——百度百科</p>
+</blockquote>
+<p>Tarjan是基于迪法师（DFS）的一种算法，可以说是一种流（du）批（liu）的操作，本蒟蒻苦哈哈的学了好几天才学会强连通分量和缩点；</p>
+<p>步入正轨：</p>
+<h2 id="图中6是第一个被发现的强连通分量其次是5最后被发现的是3412顺序无所谓">图中｛6｝是第一个被发现的强连通分量，其次是｛5｝，最后被发现的是｛3，4，1，2｝<em>（顺序无所谓）</em></h2>
+<figure data-type="image" tabindex="2"><img src="https://img-blog.csdnimg.cn/20200226074807157.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2Rmc2RzZGFzYQ==,size_16,color_FFFFFF,t_70" alt="图丑勿喷" loading="lazy"></figure>
+<p>Tarjan算法是解决强连通分量和缩点问题的一种比较常见的方法</p>
+<p>接下来开始一步一步的</p>
+<p>首先给你一个图（求其中的强连通分量）</p>
+<figure data-type="image" tabindex="3"><img src="https://img-blog.csdnimg.cn/20190823091129601.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>在这里我们假设从点1开始遍历，并且将访问的点压入栈中</p>
+<p>在进行操作之前，我们要明确Tarjan中的两个至关重要的数组：DFN和LOW；</p>
+<p>DFN[x]：表示这个点x几次被遍历到；</p>
+<p>LOW[x]：表示点x或点x的子树能够追溯到的最早的栈中节点的次序号；</p>
+<p>即LOW[x]=min{LOW[x]，LOW[next]}；</p>
+<p>其中next为x的子节点；</p>
+<p>接下来，我们来一步一步的找；</p>
+<h3 id="第一遍从1直接一直遍历到6另访问到的点的初始low和dfn都为numnum为计数器">第一遍从1直接一直遍历到6，另访问到的点的初始low和dfn都为num++;num为计数器；</h3>
+<p>但当我们遍历到6是发现6没有子节点了，所以low[6]=dfn[6]=4;发现一个强连通分量｛6｝，6出栈；</p>
+<figure data-type="image" tabindex="4"><img src="https://img-blog.csdnimg.cn/20190823091319822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>退回到5，low[5]=min(low[5],low[6]);</p>
+<p>low[6]=4;而low[5]=dfn[5]=3;</p>
+<p>所以low[5]=3；</p>
+<p>low[5]=dfn[5];所以5也是一个强连通分量；5出栈；</p>
+<figure data-type="image" tabindex="5"><img src="https://img-blog.csdnimg.cn/20190823091329523.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>返回3发现3有子节点4，搜索4，并且4入栈；发现4也有子节点，6已经为强连通分量且不再栈中，跳过；</p>
+<p>遍历1，发现一在栈中且已经被访问过，那么4值得被发现；</p>
+<p>所以low[4]=min(low[4],dfn[1]);所以low[4]=1；</p>
+<p>4遍历完，又因为dfn[4]!=low[4],所以4不退站；回到3，low[3]=min(low[3],low[4]);</p>
+<p>所以low[3]=1;3访问完，又因为dfn[3]!=low[3],所以3不退站；</p>
+<figure data-type="image" tabindex="6"><img src="https://img-blog.csdnimg.cn/20190823091337456.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>回到1，发现1还有子节点2，2入栈；发现2的子节点4已经被访问且在栈中，所以low[2]=min(dfn[4],low[2]);</p>
+<p>所以low[2]=5;访问完2，回到一，发现low[1]=dfn[1];所以将栈中的所有点出栈，并且这些点为一个强连通分量；</p>
+<figure data-type="image" tabindex="7"><img src="https://img-blog.csdnimg.cn/20190823091346286.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1ByZWRpY3Rpb25fXw==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" loading="lazy"></figure>
+<p>至此，所有点已经都被访问，算法结束。</p>
+<p>时间复杂度为O(N+M)；</p>
+<p>下面插上代码：</p>
+<pre><code class="language-csharp">#include&lt;iostream&gt;
+#include&lt;cstdio&gt;
+#include&lt;vector&gt;
+#include&lt;string.h&gt;
+#include&lt;stack&gt;
+#define Size 101
+using namespace std;
+inline int read()
+{
+    int x=0,f=1;
+    char ch=getchar();
+    while(ch&lt;'0'||ch&gt;'9')
+    {
+        if(ch=='-')
+        f=-1;
+        ch=getchar();
+    }
+    while(ch&gt;='0'&amp;&amp;ch&lt;='9')
+    {
+        x=(x&lt;&lt;1)+(x&lt;&lt;3)+(ch^48);
+        ch=getchar();
+    }
+    return x*f;
+}
+stack&lt;int&gt; atack;
+vector&lt;int&gt; map[Size]; 
+int a,b,c,d,num=0,low[Size],dfn[Size];
+bool inst[Size];
+void tarjan(int now)
+{
+	dfn[now]=low[now]=++num;
+	atack.push(now);
+	inst[now]=true;
+	for(int i=0;i&lt;map[now].size();i++)
+	{
+		int next=map[now][i];
+		if(dfn[next]==0)
+		{
+			tarjan(next);
+		    low[now]=min(low[now],low[next]);
+		}else if(inst[next]==1)
+	    {
+		low[now]=min(low[now],dfn[next]);
+	    }
+	}
+	if(dfn[now]==low[now])
+	{
+		int p;
+		do
+		{
+			p=atack.top();
+			atack.pop();
+			cout&lt;&lt;p&lt;&lt;&quot; &quot;;
+			inst[p]=0;
+		}while(p!=now);
+		cout&lt;&lt;endl;
+	}
+}
+int main()
+{
+	a=read();b=read();
+	for(int i=1;i&lt;=b;i++)
+	{
+		c=read();d=read();
+		map[c].push_back(d);
+	}
+	memset(dfn,0,sizeof(dfn));
+	memset(inst,false,sizeof(inst));
+	for(int i=1;i&lt;=a;++i)
+	{
+		if(dfn[i]==0)
+		tarjan(i);
+	}
+	return 0;
+}
+</code></pre>
+<p>接下来，讲一下缩点，</p>
+<p>缩点基于强连通分量，在强连通分量的基础上，稍微加一些操作即可。</p>
+<p>缩点就是将所有在同一个强连通分量中的点，压进一个点，然后再累加起每个点的权值，再每个点进行判断，看他们所属的强连通分量是否相同，如果不相同，则说明就是两个不同的缩玩以后的点，我们就可以将他们存起来，存入一个新图。就是缩玩点以后的图。</p>
+<pre><code>void tarjan(int now)
+{
+	dfn[now]=low[now]=++num;
+	atack.push(now);
+	inst[now]=true;
+	for(int i=0;i&lt;map[now].size();i++)
+	{
+		int next=map[now][i];
+		if(dfn[next]==0)
+		{
+			tarjan(next);
+		    low[now]=min(low[now],low[next]);
+		}else if(inst[next]==1)
+	    {
+		low[now]=min(low[now],dfn[next]);
+	    }
+	}
+	if(dfn[now]==low[now])
+	{
+		numb++;
+		int q;
+		do
+		{
+			q=atack.top();
+			inst[q]=0;
+			atack.pop();
+			bl[q]=numb;//标记点q属于哪一个强连通分量
+			nums[numb]++;/*/累加
+		}while(q!=now);
+	}
+}
+</code></pre>
+<pre><code>for(int i=1;i&lt;=a;i++)
+	{
+		for(int j=0;j&lt;map[i].size();j++)
+		{
+			int r=bl[i],t=bl[map[i][j]];//如果不在同一个强连通分量
+			if(r!=t)
+			{
+				map2[r].push_back(t);//从新存图
+				out[r]+=nums[t];
+			}
+		}
+	}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AA%E6%BC%ABjian%E9%95%BFnan%E7%9A%84%E8%BF%87%E7%A8%8B">这是一个漫（jian）长（nan）的过程</a>
+<ul>
+<li><a href="#%E5%9B%BE%E4%B8%AD6%E6%98%AF%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%A2%AB%E5%8F%91%E7%8E%B0%E7%9A%84%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F%E5%85%B6%E6%AC%A1%E6%98%AF5%E6%9C%80%E5%90%8E%E8%A2%AB%E5%8F%91%E7%8E%B0%E7%9A%84%E6%98%AF3412%E9%A1%BA%E5%BA%8F%E6%97%A0%E6%89%80%E8%B0%93">图中｛6｝是第一个被发现的强连通分量，其次是｛5｝，最后被发现的是｛3，4，1，2｝<em>（顺序无所谓）</em></a>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E9%81%8D%E4%BB%8E1%E7%9B%B4%E6%8E%A5%E4%B8%80%E7%9B%B4%E9%81%8D%E5%8E%86%E5%88%B06%E5%8F%A6%E8%AE%BF%E9%97%AE%E5%88%B0%E7%9A%84%E7%82%B9%E7%9A%84%E5%88%9D%E5%A7%8Blow%E5%92%8Cdfn%E9%83%BD%E4%B8%BAnumnum%E4%B8%BA%E8%AE%A1%E6%95%B0%E5%99%A8">第一遍从1直接一直遍历到6，另访问到的点的初始low和dfn都为num++;num为计数器；</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://rilxr.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
