@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://rilxr.github.io</id>
+    <id>https://rilxr1.github.io</id>
     <title>PrincessYR✨～</title>
-    <updated>2020-04-06T08:29:51.192Z</updated>
+    <updated>2020-04-06T12:06:47.441Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://rilxr.github.io"/>
-    <link rel="self" href="https://rilxr.github.io/atom.xml"/>
+    <link rel="alternate" href="https://rilxr1.github.io"/>
+    <link rel="self" href="https://rilxr1.github.io/atom.xml"/>
     <subtitle>AK IOI</subtitle>
-    <logo>https://rilxr.github.io/images/avatar.png</logo>
-    <icon>https://rilxr.github.io/favicon.ico</icon>
+    <logo>https://rilxr1.github.io/images/avatar.png</logo>
+    <icon>https://rilxr1.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, PrincessYR✨～</rights>
     <entry>
         <title type="html"><![CDATA[CF914D 【Bash and a Tough Math Puzzle】题解]]></title>
-        <id>https://rilxr.github.io/post/cf914d-bash-and-a-tough-math-puzzle-ti-jie/</id>
-        <link href="https://rilxr.github.io/post/cf914d-bash-and-a-tough-math-puzzle-ti-jie/">
+        <id>https://rilxr1.github.io/post/cf914d-bash-and-a-tough-math-puzzle-ti-jie/</id>
+        <link href="https://rilxr1.github.io/post/cf914d-bash-and-a-tough-math-puzzle-ti-jie/">
         </link>
         <updated>2020-04-06T02:02:50.000Z</updated>
         <content type="html"><![CDATA[<p>这是一道线段树的模板题，外加找最大公约数。</p>
@@ -243,8 +243,8 @@ int main()
     </entry>
     <entry>
         <title type="html"><![CDATA[CF427C 【Checkposts】题解]]></title>
-        <id>https://rilxr.github.io/post/cf427c-checkposts-ti-jie/</id>
-        <link href="https://rilxr.github.io/post/cf427c-checkposts-ti-jie/">
+        <id>https://rilxr1.github.io/post/cf427c-checkposts-ti-jie/</id>
+        <link href="https://rilxr1.github.io/post/cf427c-checkposts-ti-jie/">
         </link>
         <updated>2020-04-06T02:02:04.000Z</updated>
         <content type="html"><![CDATA[<p>这道题难度并不大，只要会强连通分量基本上都能AC。</p>
@@ -362,8 +362,8 @@ int main()
     </entry>
     <entry>
         <title type="html"><![CDATA[CF25C 【Roads in Berland】题解]]></title>
-        <id>https://rilxr.github.io/post/cf25c-roads-in-berland-ti-jie/</id>
-        <link href="https://rilxr.github.io/post/cf25c-roads-in-berland-ti-jie/">
+        <id>https://rilxr1.github.io/post/cf25c-roads-in-berland-ti-jie/</id>
+        <link href="https://rilxr1.github.io/post/cf25c-roads-in-berland-ti-jie/">
         </link>
         <updated>2020-04-06T02:01:34.000Z</updated>
         <content type="html"><![CDATA[<p><s>Dij</s>（floyd）</p>
@@ -458,8 +458,8 @@ int main()
     </entry>
     <entry>
         <title type="html"><![CDATA[Tarjan讲解]]></title>
-        <id>https://rilxr.github.io/post/tarjan-jiang-jie/</id>
-        <link href="https://rilxr.github.io/post/tarjan-jiang-jie/">
+        <id>https://rilxr1.github.io/post/tarjan-jiang-jie/</id>
+        <link href="https://rilxr1.github.io/post/tarjan-jiang-jie/">
         </link>
         <updated>2020-04-06T02:00:04.000Z</updated>
         <content type="html"><![CDATA[<h1 id="这是一个漫jian长nan的过程">这是一个漫（jian）长（nan）的过程</h1>
