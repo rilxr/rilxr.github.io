@@ -17,12 +17,12 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background: url(../img/centerbg.jpg) center 0 no-repeat;
+    background: url(../img/bg_01.jpg) center 0 no-repeat;
     background-size: cover;
 }*/
 
 .centerbg{
-    background-image: url(../img/centerbg.jpg);
+    background-image: url(../img/bg_01.jpg);
     margin:0;
     background-attachment: fixed;
     background-size: cover;
